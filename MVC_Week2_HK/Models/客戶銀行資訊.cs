@@ -13,7 +13,7 @@ namespace MVC_Week1_HK.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     
-    public partial class 客戶銀行資訊
+    public partial class 客戶銀行資訊 : MVC_Week1_HK.Models.I客戶銀行資訊Data
     {
         public int Id { get; set; }
         [Required]

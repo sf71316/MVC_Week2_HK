@@ -7,10 +7,11 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MVC_Week1_HK.Models;
+using MVC_Week1_HK.ActionFilter;
 
 namespace MVC_Week1_HK.Controllers
 {
-    public class CustomController : Controller
+    public class CustomController : BaseController
     {
         private 客戶資料Repository CustomRepos = RepositoryHelper.Get客戶資料Repository();
 
@@ -21,6 +22,7 @@ namespace MVC_Week1_HK.Controllers
         }
 
         // GET: Custom/Details/5
+        [IDFilter]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -46,9 +48,11 @@ namespace MVC_Week1_HK.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,客戶名稱,統一編號,電話,傳真,地址,Email")] 客戶資料 客戶資料)
+        //public ActionResult Create([Bind(Include = "Id,客戶名稱,統一編號,電話,傳真,地址,Email")] 客戶資料 客戶資料)
+        public ActionResult Create(FormCollection form)
         {
-            if (ModelState.IsValid)
+            客戶資料 客戶資料=new 客戶資料();
+            if (this.TryUpdateModel<I客戶資料Data>(客戶資料))
             {
              //   db.客戶資料.Add(客戶資料);
                // db.SaveChanges();
@@ -61,6 +65,7 @@ namespace MVC_Week1_HK.Controllers
         }
 
         // GET: Custom/Edit/5
+        [IDFilter]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -80,9 +85,10 @@ namespace MVC_Week1_HK.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,客戶名稱,統一編號,電話,傳真,地址,Email")] 客戶資料 客戶資料)
+        public ActionResult Edit(FormCollection form)
         {
-            if (ModelState.IsValid)
+            客戶資料 客戶資料 = new 客戶資料();
+            if (this.TryUpdateModel<I客戶資料Data>(客戶資料))
             {
                 this.CustomRepos.Edit(客戶資料);
                 
@@ -92,6 +98,7 @@ namespace MVC_Week1_HK.Controllers
         }
 
         // GET: Custom/Delete/5
+        [IDFilter]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -109,6 +116,7 @@ namespace MVC_Week1_HK.Controllers
         // POST: Custom/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [IDFilter]
         public ActionResult DeleteConfirmed(int id)
         {
             客戶資料 客戶資料 = CustomRepos.Find(p => p.Id == id);

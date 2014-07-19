@@ -13,7 +13,7 @@ namespace MVC_Week1_HK.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     
-    public partial class 客戶資料
+    public partial class 客戶資料 : MVC_Week1_HK.Models.I客戶資料Data
     {
         public 客戶資料()
         {

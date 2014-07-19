@@ -13,7 +13,7 @@ namespace MVC_Week1_HK.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     
-    public partial class 客戶聯絡人
+    public partial class 客戶聯絡人 : MVC_Week1_HK.Models.I客戶聯絡人Data
     {
         public int Id { get; set; }
         [Required]

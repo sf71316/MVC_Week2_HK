@@ -7,10 +7,11 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MVC_Week1_HK.Models;
+using MVC_Week1_HK.ActionFilter;
 
 namespace MVC_Week1_HK.Controllers
 {
-    public class ContactController : Controller
+    public class ContactController : BaseController
     {
         //private DbEntities db = new DbEntities();
         private 客戶聯絡人Repository ContactRepo = RepositoryHelper.Get客戶聯絡人Repository();
@@ -20,7 +21,7 @@ namespace MVC_Week1_HK.Controllers
             //var 客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.客戶資料);
             return View(ContactRepo.All().ToList());
         }
-
+        [IDFilter]
         // GET: Contact/Details/5
         public ActionResult Details(int? id)
         {
@@ -48,9 +49,10 @@ namespace MVC_Week1_HK.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,客戶Id,職稱,姓名,Email,手機,電話")] 客戶聯絡人 客戶聯絡人)
+        public ActionResult Create(FormCollection form)
         {
-            if (ModelState.IsValid)
+            客戶聯絡人 客戶聯絡人 = new 客戶聯絡人();
+            if (this.TryUpdateModel<I客戶聯絡人Data>(客戶聯絡人))
             {
                 ContactRepo.Add(客戶聯絡人);
                 ContactRepo.UnitOfWork.Commit();
@@ -60,7 +62,7 @@ namespace MVC_Week1_HK.Controllers
             ViewBag.客戶Id = new SelectList(ContactRepo.All(), "Id", "客戶名稱", 客戶聯絡人.客戶Id);
             return View(客戶聯絡人);
         }
-
+        [IDFilter]
         // GET: Contact/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -82,18 +84,18 @@ namespace MVC_Week1_HK.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,客戶Id,職稱,姓名,Email,手機,電話")] 客戶聯絡人 客戶聯絡人)
+        public ActionResult Edit(FormCollection form)
         {
-            if (ModelState.IsValid)
+            客戶聯絡人 客戶聯絡人 = new 客戶聯絡人();
+            if (this.TryUpdateModel<I客戶聯絡人Data>(客戶聯絡人))
             {
-                
                 this.ContactRepo.Edit(客戶聯絡人);
                 return RedirectToAction("Index");
             }
             ViewBag.客戶Id = new SelectList(RepositoryHelper.Get客戶資料Repository().All(), "Id", "客戶名稱", 客戶聯絡人.客戶Id);
             return View(客戶聯絡人);
         }
-
+        [IDFilter]
         // GET: Contact/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -112,6 +114,7 @@ namespace MVC_Week1_HK.Controllers
         // POST: Contact/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [IDFilter]
         public ActionResult DeleteConfirmed(int id)
         {
             客戶聯絡人 客戶聯絡人 = ContactRepo.Find(p => p.Id == id);

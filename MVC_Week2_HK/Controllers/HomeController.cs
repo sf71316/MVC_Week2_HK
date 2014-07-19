@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace MVC_Week1_HK.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         public ActionResult Index()
         {
@@ -25,6 +25,10 @@ namespace MVC_Week1_HK.Controllers
         {
 
             return View(RepositoryHelper.GetViewRepository().All());
+        }
+        public ActionResult NotFind()
+        {
+            return View();
         }
     }
 }
