@@ -7,6 +7,20 @@ namespace MVC_Week1_HK.Models
 			return new EFUnitOfWork();
 		}		
 		
+		public static V_ReportRepository GetV_ReportRepository()
+		{
+			var repository = new V_ReportRepository();
+			repository.UnitOfWork = GetUnitOfWork();
+			return repository;
+		}
+
+		public static V_ReportRepository GetV_ReportRepository(IUnitOfWork unitOfWork)
+		{
+			var repository = new V_ReportRepository();
+			repository.UnitOfWork = unitOfWork;
+			return repository;
+		}		
+
 		public static 客戶資料Repository Get客戶資料Repository()
 		{
 			var repository = new 客戶資料Repository();
@@ -54,7 +68,6 @@ namespace MVC_Week1_HK.Models
             repository.UnitOfWork = GetUnitOfWork();
             return repository;
         }
-
         public static ReportRepository GetViewRepository(IUnitOfWork unitOfWork)
         {
             var repository = new ReportRepository();

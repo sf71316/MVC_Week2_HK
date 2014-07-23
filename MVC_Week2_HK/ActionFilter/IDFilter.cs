@@ -18,7 +18,7 @@ namespace MVC_Week1_HK.ActionFilter
         {
             var id = filterContext.HttpContext.Request.QueryString["id"];
             int _id = 0;
-            if (int.TryParse(id, out _id))
+            if (int.TryParse(id, out _id)|| string.IsNullOrEmpty(id))
             {
                 base.OnActionExecuting(filterContext);
             }

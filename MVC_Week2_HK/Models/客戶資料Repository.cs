@@ -11,6 +11,7 @@ namespace MVC_Week1_HK.Models
         {
             return base.All().Where(p=>p.IsDelete==false);
         }
+
         public 客戶資料 Find(Func<客戶資料, bool> func)
         {
             return base.All().Where(p => p.IsDelete == false).FirstOrDefault(func);

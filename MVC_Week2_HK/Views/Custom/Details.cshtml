@@ -1,5 +1,5 @@
 ﻿@model MVC_Week1_HK.Models.客戶資料
-
+@using MVC_Week1_HK.Models;
 @{
     ViewBag.Title = "Details";
 }
@@ -64,3 +64,103 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+<h4>客戶銀行資訊</h4>
+@{
+    var bank = ViewBag.Bank as List<客戶銀行資訊>;
+    var contact = ViewBag.Contact as List<客戶聯絡人>;
+}
+<table class="table">
+    <tr>
+        <th>
+            銀行名稱
+        </th>
+        <th>
+            銀行代碼
+        </th>
+        <th>
+            分行代碼
+        </th>
+        <th>
+            帳戶名稱
+        </th>
+        <th>
+            帳戶號碼
+        </th>
+        <th>
+        </th>
+    </tr>
+
+    @foreach (var item in bank)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.銀行名稱)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.銀行代碼)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.分行代碼)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.帳戶名稱)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.帳戶號碼)
+            </td>
+            
+            <td>
+                @Html.ActionLink("Delete", "DeleteBank", new { id = item.Id, cid = Model.Id }, new { onclick = "return confirm('確定刪除此資料')" })
+            </td>
+        </tr>
+    }
+
+</table>
+<h4>客戶聯絡人</h4>
+<table class="table">
+    <tr>
+        <th>
+            職稱
+        </th>
+        <th>
+            姓名
+        </th>
+        <th>
+            Email
+        </th>
+        <th>
+            手機
+        </th>
+        <th>
+            電話
+        </th>
+        <th>
+        </th>
+    </tr>
+
+    @foreach (var item in contact)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.職稱)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.姓名)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.手機)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.電話)
+            </td>
+          
+            <td>
+                @Html.ActionLink("Delete", "DeleteContact", new { id = item.Id, cid = Model.Id }, new { onclick = "return confirm('確定刪除此資料')" })
+            </td>
+        </tr>
+    }
+
+</table>

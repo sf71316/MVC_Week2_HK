@@ -206,9 +206,8 @@
     <Compile Include="Models\RepositoryIQueryableExtensions.cs">
       <DependentUpon>IRepository.EF6.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\V_Report.cs">
-      <DependentUpon>DbCustomer.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Models\V_Report.cs" />
+    <Compile Include="Models\V_ReportRepository.cs" />
     <Compile Include="Models\客戶聯絡人.cs">
       <DependentUpon>DbCustomer.tt</DependentUpon>
     </Compile>

@@ -30,9 +30,15 @@ namespace MVC_Week1_HK.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             客戶資料 客戶資料 = CustomRepos.Find(p=>p.Id==id.Value);
+        
             if (客戶資料 == null)
             {
                 return HttpNotFound();
+            }
+            else
+            {
+                ViewBag.Bank = RepositoryHelper.Get客戶銀行資訊Repository().All().Where(p => p.客戶Id == id.Value).ToList();
+                ViewBag.Contact = RepositoryHelper.Get客戶聯絡人Repository().All().Where(p => p.客戶Id == id.Value).ToList();
             }
             return View(客戶資料);
         }
@@ -72,10 +78,17 @@ namespace MVC_Week1_HK.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            CustomRepos.UnitOfWork.LazyLoadingEnabled = false;
             客戶資料 客戶資料 = CustomRepos.Find(p => p.Id == id.Value);
+           
             if (客戶資料 == null)
             {
                 return HttpNotFound();
+            }
+            else
+            {
+                ViewBag.Bank = RepositoryHelper.Get客戶銀行資訊Repository().All().Where(p => p.客戶Id == id.Value).ToList();
+                ViewBag.Contact = RepositoryHelper.Get客戶聯絡人Repository().All().Where(p => p.客戶Id == id.Value).ToList();
             }
             return View(客戶資料);
         }
@@ -105,6 +118,7 @@ namespace MVC_Week1_HK.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             客戶資料 客戶資料 = CustomRepos.Find(p => p.Id == id.Value);
             if (客戶資料 == null)
             {
@@ -126,7 +140,23 @@ namespace MVC_Week1_HK.Controllers
             CustomRepos.UnitOfWork.Commit();
             return RedirectToAction("Index");
         }
+        public ActionResult DeleteBank(int? id,int? cid)
+        {
 
+            客戶銀行資訊Repository repo = RepositoryHelper.Get客戶銀行資訊Repository();
+            var e = repo.Find(p => p.Id == id);
+            repo.Delete(e);
+
+            return RedirectToAction("Details", new { id = cid });
+        }
+        public ActionResult DeleteContact(int? id, int? cid)
+        {
+            客戶聯絡人Repository repo = RepositoryHelper.Get客戶聯絡人Repository();
+            var e = repo.Find(p => p.Id == id);
+            repo.Delete(e);
+            return RedirectToAction("Details", new { id = cid });
+
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

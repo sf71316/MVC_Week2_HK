@@ -8,17 +8,17 @@ namespace MVC_Week1_HK.Controllers
 {
     public abstract class BaseController : Controller
     {
-        protected override void HandleUnknownAction(string actionName)
-        {
-            if (this.Request.IsAjaxRequest())
-            {
-                base.HandleUnknownAction(actionName);
-            }
-            else
-            {
-                this.RedirectToAction("NotFind", "Home").ExecuteResult(this.ControllerContext);
-            }
+        //protected override void HandleUnknownAction(string actionName)
+        //{
+        //    if (this.Request.IsAjaxRequest())
+        //    {
+        //        base.HandleUnknownAction(actionName);
+        //    }
+        //    else
+        //    {
+        //        this.RedirectToAction("NotFind", "Home").ExecuteResult(this.ControllerContext);
+        //    }
 
-        }
+        //}
     }
 }
