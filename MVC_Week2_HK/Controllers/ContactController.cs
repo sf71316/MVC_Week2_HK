@@ -49,17 +49,16 @@ namespace MVC_Week1_HK.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(FormCollection form)
+        public ActionResult Create([Bind(Include = "Id,客戶Id,職稱,姓名,Email,手機,電話")] 客戶聯絡人 客戶聯絡人)
         {
-            客戶聯絡人 客戶聯絡人 = new 客戶聯絡人();
-            if (this.TryUpdateModel<I客戶聯絡人Data>(客戶聯絡人))
+            if (this.ModelState.IsValid)
             {
                 ContactRepo.Add(客戶聯絡人);
                 ContactRepo.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.客戶Id = new SelectList(ContactRepo.All(), "Id", "客戶名稱", 客戶聯絡人.客戶Id);
+            ViewBag.客戶Id = new SelectList(RepositoryHelper.Get客戶資料Repository().All(), "Id", "客戶名稱", 客戶聯絡人.客戶Id);
             return View(客戶聯絡人);
         }
         [IDFilter]
@@ -84,10 +83,9 @@ namespace MVC_Week1_HK.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(FormCollection form)
+        public ActionResult Edit([Bind(Include = "Id,客戶Id,職稱,姓名,Email,手機,電話")] 客戶聯絡人 客戶聯絡人)
         {
-            客戶聯絡人 客戶聯絡人 = new 客戶聯絡人();
-            if (this.TryUpdateModel<I客戶聯絡人Data>(客戶聯絡人))
+            if (this.ModelState.IsValid)
             {
                 this.ContactRepo.Edit(客戶聯絡人);
                 return RedirectToAction("Index");

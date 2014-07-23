@@ -2,8 +2,8 @@
 
 @{
     ViewBag.Title = "Edit";
-    var bank = ViewBag.Bank as List<MVC_Week1_HK.Models.客戶銀行資訊>;
-    var contact = ViewBag.Contact as List<MVC_Week1_HK.Models.客戶聯絡人>;
+    var bank = (ViewBag.Bank as List<MVC_Week1_HK.Models.客戶銀行資訊>).ToArray();
+    var contact = (ViewBag.Contact as List<MVC_Week1_HK.Models.客戶聯絡人>).ToArray();
 }
 
 <h2>Edit</h2>
@@ -74,11 +74,14 @@
         </div>
     </div>
 
+  
+}
+@using (Html.BeginForm("UpdateBatch", "Custom"))
+{
+    @Html.AntiForgeryToken()
+    <input type="submit" value="批次更新" />
+    
     <h4>客戶銀行資訊</h4>
-    
-    
-
-    
     <table class="table">
         <tr>
             <th>
@@ -96,29 +99,29 @@
             <th>
                 帳戶號碼
             </th>
-         
+
         </tr>
 
-        @foreach (var item in bank)
+        @for (var i = 0; i < bank.Length; i++)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.銀行名稱)
+                    @Html.DisplayFor(modelItem => bank[i].銀行名稱)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.銀行代碼)
+                    @Html.DisplayFor(modelItem => bank[i].銀行代碼)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.分行代碼)
+                    @Html.DisplayFor(modelItem => bank[i].分行代碼)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.帳戶名稱)
+                    @Html.DisplayFor(modelItem => bank[i].帳戶名稱)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.帳戶號碼)
+                    @Html.EditorFor(modelItem => bank[i].帳戶號碼)
                 </td>
+                @Html.HiddenFor(modelItem => bank[i].Id);
 
-          
             </tr>
         }
 
@@ -141,35 +144,34 @@
             <th>
                 電話
             </th>
-         
+
         </tr>
 
-        @foreach (var item in contact)
+        @for (var i = 0; i < contact.Length; i++)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.職稱)
+                    @Html.DisplayFor(modelItem => contact[i].職稱)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.姓名)
+                    @Html.DisplayFor(modelItem => contact[i].姓名)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Email)
+                    @Html.DisplayFor(modelItem => contact[i].Email)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.手機)
+                    @Html.DisplayFor(modelItem => contact[i].手機)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.電話)
+                    @Html.EditorFor(modelItem => contact[i].電話)
                 </td>
+                @Html.HiddenFor(modelItem => contact[i].Id);
 
-              
             </tr>
         }
 
     </table>
 }
-
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>

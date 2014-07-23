@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using MVC_Week1_HK.Models;
 using MVC_Week1_HK.ActionFilter;
+using MVC_Week1_HK.Models.viewModel;
+using OfficeOpenXml;
 
 namespace MVC_Week1_HK.Controllers
 {
@@ -107,6 +109,8 @@ namespace MVC_Week1_HK.Controllers
                 
                 return RedirectToAction("Index");
             }
+            ViewBag.Bank = RepositoryHelper.Get客戶銀行資訊Repository().All().Where(p => p.客戶Id == 客戶資料.Id).ToList();
+            ViewBag.Contact = RepositoryHelper.Get客戶聯絡人Repository().All().Where(p => p.客戶Id == 客戶資料.Id).ToList();
             return View(客戶資料);
         }
 
@@ -156,6 +160,58 @@ namespace MVC_Week1_HK.Controllers
             repo.Delete(e);
             return RedirectToAction("Details", new { id = cid });
 
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateBatch(BatchUpdateViewModel form)
+        {
+            //TODO Model繫結時未觸發模型驗證，而在執行更新方法時觸發
+            if (this.ModelState.IsValid)
+            {
+                var _bankrepo = RepositoryHelper.Get客戶銀行資訊Repository();
+                var _contactrepo = RepositoryHelper.Get客戶聯絡人Repository();
+                foreach (var item in form.bank)
+                {
+                    var e = _bankrepo.Find(p => p.Id == item.Id);
+                    e.帳戶號碼 = item.帳戶號碼;
+                    _bankrepo.Edit(e);
+                }
+                foreach (var item in form.contact)
+                {
+                    var e = _contactrepo.Find(p => p.Id == item.Id);
+                    e.電話 = item.電話;
+                    _contactrepo.Edit(e);
+                }
+            }
+            return RedirectToAction("Index");
+        }
+        public ActionResult Export()
+        {
+            using (ExcelPackage p = new ExcelPackage())
+            {
+                ExcelWorksheet sheet = p.Workbook.Worksheets.Add("客戶資料");
+                sheet.Cells[1, 1].Value = "客戶名稱";
+                sheet.Cells[1, 2].Value = "統一編號";
+                sheet.Cells[1, 3].Value = "電話";
+                sheet.Cells[1, 4].Value = "傳真";
+                sheet.Cells[1, 5].Value = "地址";
+                sheet.Cells[1, 6].Value = "Email";
+                int row = 2;
+                var custom = CustomRepos.All();
+                foreach (var item in custom)
+                {
+                    sheet.Cells[row, 1].Value = item.客戶名稱;
+                    sheet.Cells[row, 2].Value = item.統一編號;
+                    sheet.Cells[row, 3].Value = item.電話;
+                    sheet.Cells[row, 4].Value = item.傳真;
+                    sheet.Cells[row, 5].Value = item.地址;
+                    sheet.Cells[row, 6].Value = item.Email;
+                    row++;
+                }
+                
+                return File(p.GetAsByteArray(), "application/vnd.ms-excel",string.Format( "{0}_客戶資料匯出.xlsx",DateTime.Now.ToString("yyyyMMdd")));
+            }
+            
         }
         protected override void Dispose(bool disposing)
         {
